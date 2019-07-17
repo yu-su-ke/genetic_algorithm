@@ -152,33 +152,3 @@ def make_matrix(collection, db, country_list):
     return country_array, country_list
 
 
-if __name__ == "__main__":
-    dist = DistCalculation()
-    country_list = []
-    client = MongoClient('localhost', 27017)
-    collection = 'country'
-    db = client.mydb
-    # save_mongo(collection, db)
-    all_distance = []
-
-    for i in range(100, 2100, 100):
-        before_each_distance = []
-        after_each_distance = []
-
-        ga = GeneticAlgorithm()
-        ga.set_location(make_matrix(collection, db, country_list))
-        # ga.plot()
-        ga.gen_algo(n_step=i)
-        ga.plot(ga.result)
-
-        # print('最適化実行前 : ' + str(sum(before_each_distance)))
-        print('最適化実行後 : ' + str(sum(after_each_distance)))
-        all_distance.append(round(sum(after_each_distance)))
-
-    x = [i for i in range(100, 2100, 100)]
-    plt.plot(x, all_distance)
-    plt.xticks(np.arange(100, 2100, 200))
-    for (i, j, k) in zip(x, all_distance, all_distance):
-        plt.plot(i, j, 'o')
-        plt.annotate(k, xy=(i, j))
-    plt.show()
